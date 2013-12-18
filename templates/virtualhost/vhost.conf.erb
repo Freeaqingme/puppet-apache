@@ -59,8 +59,8 @@
     Alias <%= @aliases %>
 <% end -%>
 <% end -%>
-
 <% if @bool_ssl -%>
+
     SSLEngine on
 
 <% if @ssl_crt_file != '' -%>
@@ -75,5 +75,4 @@
     SSLCipherSuite          <%= @ssl_cipher_suite %>
     SSLHonorCipherOrder on
 <% end -%>
-
 </VirtualHost>
