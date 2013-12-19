@@ -264,6 +264,10 @@ define apache::vhost (
     }
   }
 
+  if ! defined(Apache::Listen[$port]) {
+    apache::listen { $port: }
+  }
+
   if $bool_passenger == true {
     include apache::passenger
   }
