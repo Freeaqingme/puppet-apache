@@ -431,6 +431,13 @@ class apache (
       replace => $apache::manage_file_replace,
       audit   => $apache::manage_audit,
     }
+    
+    # We clear this file as it is managed by Apache::Listen
+    file { '/etc/apache2/ports.conf':
+      ensure => file,
+      content => '# Managed by Puppet',
+      require => Package['apache'],
+    }
   }
 
   if $apache::config_file_default_purge {
