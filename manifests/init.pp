@@ -440,7 +440,6 @@ class apache (
       content => template('apache/init.debian.erb'),
       replace => $apache::manage_file_replace,
       audit   => $apache::manage_audit,
-      require => Package['apache'],
     }
     
     # We clear this file as it is managed by Apache::Listen
