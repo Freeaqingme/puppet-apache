@@ -440,6 +440,14 @@ class apache (
       content => template('apache/init.debian.erb'),
       replace => $apache::manage_file_replace,
       audit   => $apache::manage_audit,
+      require => Package['apache'],
+    }
+    
+    # We clear this file as it is managed by Apache::Listen
+    file { '/etc/apache2/ports.conf':
+      ensure => file,
+      content => '# Managed by Puppet',
+      require => Package['apache'],
     }
   }
 
@@ -490,22 +498,6 @@ class apache (
       }
     }
   }
-
-
-  ### Firewall management, if enabled ( firewall => true )
-  if $apache::bool_firewall == true {
-    firewall { "apache_${apache::protocol}_${apache::port}":
-      source      => $apache::firewall_src,
-      destination => $apache::firewall_dst,
-      protocol    => $apache::protocol,
-      port        => $apache::port,
-      action      => 'allow',
-      direction   => 'input',
-      tool        => $apache::firewall_tool,
-      enable      => $apache::manage_firewall,
-    }
-  }
-
 
   ### Debugging, if enabled ( debug => true )
   if $apache::bool_debug == true {

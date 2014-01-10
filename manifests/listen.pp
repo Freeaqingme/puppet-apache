@@ -39,4 +39,18 @@ define apache::listen (
     audit   => $apache::manage_audit,
   }
 
+  ### Firewall management, if enabled ( firewall => true )
+  if $::apache::bool_firewall == true {
+    firewall { "apache_${apache::protocol}_${name}":
+      source      => $apache::firewall_src,
+      destination => $apache::firewall_dst,
+      protocol    => $apache::protocol,
+      port        => $name,
+      action      => 'allow',
+      direction   => 'input',
+      tool        => $apache::firewall_tool,
+      enable      => $apache::manage_firewall,
+    }
+  }
+
 }
